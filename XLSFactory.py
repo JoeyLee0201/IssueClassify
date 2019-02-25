@@ -41,6 +41,23 @@ def read2(name, index):
     return res
 
 
+def read_range(name, index=0):
+    data = xlrd.open_workbook(name)
+    table = data.sheet_by_index(index)
+
+    # 获取行数和列数
+    nrows = table.nrows
+    ncols = table.ncols
+
+    print "rows:", nrows
+    print "cols:", ncols
+    res = {}
+    for i in range(nrows):
+        res[table.row_values(i)[0]] = table.row_values(i)[1]
+    del res['ID']
+    return res
+
+
 def write(labels, name, title1, title2):
     f = xlwt.Workbook()
     table = f.add_sheet('sheet', cell_overwrite_ok=True)
@@ -98,7 +115,6 @@ def write_temp2(labels, name):
         table.write(i, 1, total_num)
         i += 1
     f.save(name)
-
 
 
 

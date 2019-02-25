@@ -113,6 +113,23 @@ def build_baseline_corpus(output_file):
     f.close()
 
 
+def build_baseline_corpus_for_train(output_file):
+    f = open("./data/output/cmp_range.json","r")
+    base_range = json.loads(f.read())
+    f.close()
+    res = []
+    for dic in base_range:
+        for id, classify in dic.items():
+            if id == "LUCENE-3896" or id == "LUCENE-1458":
+                continue
+            issue = extractFromDB.fetch_baseline_issue_with_id(id)
+            issue['labels'] = classify
+            res.append(issue)
+    f = open(output_file, "w")
+    f.write(json.dumps(res, encoding="utf-8"))
+    f.close()
+
+
 def build_test_corpus(output_file):
     res = extractFromDB.fetch_issues_random_with_detail("bug", num=500)
     res += extractFromDB.fetch_issues_random("bug", limit=500, without="bug")
@@ -165,23 +182,24 @@ def main():
     # build_corpus_with_repository("./data/output/issue_corpus_repository_3148979.ic", 3148979)
     # build_corpus_with_repository("./data/output/issue_corpus_repository_1064563.ic", 1064563)
     # build_baseline_corpus("./data/output/baseline_issue_corpus.ic")
+    build_baseline_corpus_for_train("./data/output/baseline_issue_corpus_for_train.ic")
     # res = divide_into_words("./data/output/baseline_issue_corpus.ic",
     #                         "./data/output/baseline_issue_corpus_tokenize.ic")
     # res = divide_into_words("./data/output/issue_corpus/",
     #                         "./data/output/issue_corpus_tokenize/",
     #                         labels=["enhancement", "question", "feature", "doc"])
     # labels = ["bug", "enhancement", "question", "feature", "doc"]
-    input = []
+    # input = []
     # for label in labels:
     #     f = open("./data/output/issue_corpus_tokenize/"+label+".ic", "r")
     #     input += json.loads(f.read())
     #     f.close()
     # w2v.train(input, "./data/output/words_all.model")
 
-    f = open("./data/output/baseline_issue_corpus_tokenize.ic", "r")
-    input += json.loads(f.read())
-    f.close()
-    w2v.train(input, "./data/output/words_baseline.model")
+    # f = open("./data/output/baseline_issue_corpus_tokenize.ic", "r")
+    # input += json.loads(f.read())
+    # f.close()
+    # w2v.train(input, "./data/output/words_baseline.model")
     # res = preprocessor.preprocessToWord('''
     # This patch allows tests to be run in a specific order. Here is improvement: Sorting is enabled by adding the following to
     # `BuildConfig.groovy`:  ``` grails.testing.sortFiles = true ```  For finer control, a closure can be provided:

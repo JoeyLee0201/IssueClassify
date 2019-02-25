@@ -39,17 +39,27 @@ def fetch_all_baseline_issues():
     print 'fetch all baseline issues...'
     issues = db2.selectAllIssues()
     print 'fetch done'
-
     res = []
-
     for i in issues:
         issue = {}
         issue['title'] = i[0]
         issue['body'] = i[1]
         issue['labels'] = i[2]
         res.append(issue)
-
     return res
+
+
+def fetch_baseline_issue_with_id(id):
+    print 'fetch  baseline issues with id '+id+'...'
+    issues = db2.selectIssuesWithID(id)
+    print 'fetch done'
+    # issues 是二维的数组
+    # print issues[0][2]
+    issue = {}
+    issue['title'] = issues[0][0]
+    issue['body'] = issues[0][1]
+    issue['labels'] = issues[0][2]
+    return issue
 
 
 def fetch_issues_random_with_detail(label, num=0, par_label=None):
@@ -223,4 +233,5 @@ def count(labels):
 
 
 # fetch_issues_random("bug")
+# fetch_baseline_issue_with_id("HTTPCLIENT-853")
 

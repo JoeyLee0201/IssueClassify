@@ -25,6 +25,18 @@ def selectAllIssues():
         print e
 
 
+def selectIssuesWithID(id):
+    SQL = """
+        select  summary,description,type  from issue where title like '%%%s%%' limit 100000
+        """
+    try:
+        cursor.execute(SQL % id)
+        results = cursor.fetchall()
+        return results
+    except Exception, e:
+        print e
+
+
 if __name__ == '__main__':
     # projects = selectAllHighRepository()
     # for repo in projects:

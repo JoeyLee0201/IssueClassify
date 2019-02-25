@@ -64,27 +64,39 @@ def label_map(input_label, label_dic):
             return key, value[input_label]
 
 
-def label2vec(label):
-    res = np.zeros(len(label_list), dtype=float)
-    i = 0
-    for l in label_list:
-        if label == l:
-            res[i] = 1
-            break
-        i += 1
-    return res
+# def label2vec(label):
+#     res = np.zeros(len(label_list), dtype=float)
+#     i = 0
+#     for l in label_list:
+#         if label == l:
+#             res[i] = 1
+#             break
+#         i += 1
+#     return res
 
 
+def fetch_range(output_file):
+    temp = []
+    temp.append(xf.read_range("./data/baseline/httpclient.xls"))
+    temp.append(xf.read_range("./data/baseline/jackrabbit.xls"))
+    temp.append(xf.read_range("./data/baseline/lucene.xls"))
+    print temp
+    f = open(output_file, "w")
+    f.write(json.dumps(temp, encoding="utf-8", indent=2))
+    f.close()
+
+
+fetch_range("./data/output/cmp_range.json")
 # save_label_map("./data/resource/label_map.json")
-f = open("./data/resource/label_map.json")
-label_map = json.loads(f.read())
-f.close()
-
-label_list = []
-for key in label_map:
-    label_list.append(key)
-print label_list
-
-print label2vec("doc")
+# f = open("./data/resource/label_map.json")
+# label_map = json.loads(f.read())
+# f.close()
+#
+# label_list = []
+# for key in label_map:
+#     label_list.append(key)
+# print label_list
+#
+# print label2vec("doc")
 # print "defect" in map[0]
 
