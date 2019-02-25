@@ -31,7 +31,7 @@ TRAIN_ITERS = 300
 BATCH_SIZE = 20
 HIDDEN_SIZE = 100
 N_INPUTS = 100
-LEARNING_RATE = 0.05
+LEARNING_RATE = 0.01
 NUMBER_OF_LAYERS = 3
 MAX_GRAD_NORM = 5                 # 用于控制梯度膨胀的梯度大小上限。
 VOCAB_SIZE = 10000                # 词典规模。
@@ -105,7 +105,7 @@ def read_data(path, split_rate, have_temp=False, labels=None):
     else:
         point = 140
     for issue in issues:
-        issue_vec = text2vec(str(issue['title']) + ": " + issue['body'])
+        issue_vec = text2vec(unicode(issue['title']) + ": " + unicode(issue['body']))
         label_vec = label2vec(issue['labels'])
         if i <= point:
             train_data.X.append(issue_vec)
@@ -247,7 +247,7 @@ correct_prediction = tf.equal(tf.argmax(target, 1), tf.argmax(target_, 1))
 accuracy_op = tf.reduce_mean(tf.cast(correct_prediction, "float"))
 
 init = tf.global_variables_initializer()
-train, test = read_data("./data/output/baseline_issue_corpus_for_train.ic", 0.7, have_temp=False, labels=None)
+train, test = read_data("./data/output/baseline_issue_corpus_for_train_1.ic", 0.7, have_temp=False, labels=None)
 train_batches = make_batches(train, BATCH_SIZE)
 test_batches = make_batches(test, BATCH_SIZE)
 split = len(test_batches)*2/3

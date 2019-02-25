@@ -117,17 +117,19 @@ def build_baseline_corpus_for_train(output_file):
     f = open("./data/output/cmp_range.json","r")
     base_range = json.loads(f.read())
     f.close()
-    res = []
+    i = 1
     for dic in base_range:
+        res = []
         for id, classify in dic.items():
             if id == "LUCENE-3896" or id == "LUCENE-1458":
                 continue
             issue = extractFromDB.fetch_baseline_issue_with_id(id)
             issue['labels'] = classify
             res.append(issue)
-    f = open(output_file, "w")
-    f.write(json.dumps(res, encoding="utf-8"))
-    f.close()
+        f = open(output_file+"_"+str(i)+".ic", "w")
+        f.write(json.dumps(res, encoding="utf-8"))
+        f.close()
+        i += 1
 
 
 def build_test_corpus(output_file):
@@ -182,7 +184,7 @@ def main():
     # build_corpus_with_repository("./data/output/issue_corpus_repository_3148979.ic", 3148979)
     # build_corpus_with_repository("./data/output/issue_corpus_repository_1064563.ic", 1064563)
     # build_baseline_corpus("./data/output/baseline_issue_corpus.ic")
-    build_baseline_corpus_for_train("./data/output/baseline_issue_corpus_for_train.ic")
+    build_baseline_corpus_for_train("./data/output/baseline_issue_corpus_for_train")
     # res = divide_into_words("./data/output/baseline_issue_corpus.ic",
     #                         "./data/output/baseline_issue_corpus_tokenize.ic")
     # res = divide_into_words("./data/output/issue_corpus/",
