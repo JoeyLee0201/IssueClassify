@@ -201,7 +201,7 @@ def pre_recall_u(predict, answer):
 def count_tp(predict, answer, tag):
     count = 0
     for i in range(len(predict)):
-        if predict[i] == tag & answer[i] == tag:
+        if predict[i] == tag and answer[i] == tag:
             count += 1
     return count
 
@@ -209,7 +209,7 @@ def count_tp(predict, answer, tag):
 def count_fp(predict, answer, tag):
     count = 0
     for i in range(len(predict)):
-        if predict[i] == tag & answer[i] != tag:
+        if predict[i] == tag and answer[i] != tag:
             count += 1
     return count
 
@@ -217,7 +217,7 @@ def count_fp(predict, answer, tag):
 def count_tn(predict, answer, tag):
     count = 0
     for i in range(len(predict)):
-        if predict[i] != tag & answer[i] != tag:
+        if predict[i] != tag and answer[i] != tag:
             count += 1
     return count
 
@@ -225,7 +225,10 @@ def count_tn(predict, answer, tag):
 def count_fn(predict, answer, tag):
     count = 0
     for i in range(len(predict)):
-        if predict[i] != tag & answer[i] == tag:
+        if predict[i] != tag and answer[i] == tag:
+            # if tag == 0:
+            #     print "predict: ", predict[i]
+            #     print "actually: ", answer[i]
             count += 1
     return count
 
@@ -262,8 +265,8 @@ with tf.Session() as sess:
         # print cal_res
         temp_pre += predict_res.tolist()
         temp_answer += answer_res.tolist()
+        # print cal_res
         # print predict_res
-        # print answer_res
 
         # print act_res
         temp.append(accuracy)
